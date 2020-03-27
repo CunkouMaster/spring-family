@@ -22,9 +22,9 @@ eureka:
     eviction-interval-timer-in-ms: 30000
   client:
     #是否向服务注册中心注册自己【非集群服务配置，不将自己当客户端注册到自己】
-    register-with-eureka: true
+    register-with-eureka: false
     #是否检索服务（去注册中心获取其他服务的地址）【非集群服务配置，不从服务端拉取服务列表】
-    fetch-registry: true
+    fetch-registry: false
     serviceUrl:
       # 用于单机
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
