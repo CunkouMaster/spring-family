@@ -17,6 +17,7 @@
   <description>Demo project for Spring Boot</description>
 
   <modules>
+    <module>cloud-service-payment</module>
   </modules>
 
   <!-- 全局属性配置 -->
