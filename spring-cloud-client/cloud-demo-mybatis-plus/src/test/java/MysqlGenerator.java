@@ -37,21 +37,25 @@ public class MysqlGenerator {
     //作者名
     private static final String AUTHOR = "huazai";
 
-    private static AbstractTemplateEngine ENGINE = new FreemarkerTemplateEngine();
+    private static final AbstractTemplateEngine ENGINE = new FreemarkerTemplateEngine();
     //显示声明templatePath用于自定义mapper.xml的输出目录设置
-    private static String XML_TEMPLATE_PATH = "/generator/template/mapper.xml.ftl";
+    private static final String MAPPER_XML_TEMPLATE_PATH = "/generator/template/mapper.xml.ftl";
 
-    private static final String BASE_OUT_PATH = "E:\\gitHub\\spring-family\\";
+    private static final String PROJECT_PATH = "E:\\gitHub\\spring-family\\";
     //项目名
-    private static final String PROJECT_NAME = "spring-cloud-client";
-    //指定包名
-    private static final String PACKAGE_NAME = "spring.demo.mybatis";
+    private static final String PROJECT_PACKAGE = "spring-cloud-client";
     //模块名
-    private static final String MODULE_NAME = "cloud-demo-mybatis-plus";
+    private static final String MODULE_PACKAGE = "cloud-demo-mybatis-plus";
+    //指定包名
+//    private static final String PACKAGE_NAME = "spring.demo.mybatis.generator";
+//    private static final String IS_XML_GENERATOR = "generator/";
+
+    private static final String PACKAGE_NAME = "spring.demo.mybatis";
+    private static final String IS_XML_GENERATOR = "";
 
     //指定生成的表名
     private static final String[] tableNames = new String[]{
-//            "t_user"
+            "t_user"
     };
     private static final String TABLE_PREFIX = "t_";
 
@@ -64,7 +68,7 @@ public class MysqlGenerator {
                 getGlobalConfig(false),
                 getDataSourceConfig(),
                 getStrategyConfig(tableNames),
-                getPackageConfig(PACKAGE_NAME,MODULE_NAME),
+                getPackageConfig(PACKAGE_NAME),
                 getInjectionConfig(),
                 getTemplateConfig()
         );
@@ -134,7 +138,7 @@ public class MysqlGenerator {
                 .setOpen(false)
                 //设置输出路径
 //                .setOutputDir(projectPath + "/src/main/java")
-                .setOutputDir(getOutputDir(PROJECT_NAME,MODULE_NAME))
+                .setOutputDir(getOutputDir(PROJECT_PACKAGE,MODULE_PACKAGE))
                 .setFileOverride(true);
         if (!serviceNameStartWithI) {
             // 自定义文件命名，注意 %s 会自动填充表实体属性！
@@ -156,7 +160,7 @@ public class MysqlGenerator {
      * @author huazai
      */
     private static String getOutputDir(String projectName,String moduleName) {
-        return BASE_OUT_PATH + projectName + "\\" + moduleName + "\\src\\main\\java";
+        return PROJECT_PATH + projectName + "\\" + moduleName + "\\src\\main\\java";
     }
 
 
@@ -194,11 +198,10 @@ public class MysqlGenerator {
     /**
      * 设置包名
      * @param packageName 父路径包名
-     * @param moduleName 模块名
      * @return PackageConfig 包名配置
      * @author huazai
      */
-    private static PackageConfig getPackageConfig(String packageName,String moduleName) {
+    private static PackageConfig getPackageConfig(String packageName) {
         return new PackageConfig()
 //                .setModuleName(moduleName)
                 .setParent(packageName)
@@ -274,12 +277,12 @@ public class MysqlGenerator {
 
         // 自定义输出文件目录
         List<FileOutConfig> focList = new ArrayList<>();
-        focList.add(new FileOutConfig(XML_TEMPLATE_PATH) {
+        focList.add(new FileOutConfig(MAPPER_XML_TEMPLATE_PATH) {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return getCustomOutputDir(PROJECT_NAME,MODULE_NAME) + "/src/main/resources/mapper/"
-                        + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                return getCustomOutputDir(PROJECT_PACKAGE,MODULE_PACKAGE) + "/src/main/resources/mapper/"
+                       + IS_XML_GENERATOR + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
         /*
@@ -305,7 +308,7 @@ public class MysqlGenerator {
      * @author huazai
      */
     private static String getCustomOutputDir(String projectName,String moduleName) {
-        return BASE_OUT_PATH + projectName + "\\" + moduleName;
+        return PROJECT_PATH + projectName + "\\" + moduleName;
     }
 
     /**
