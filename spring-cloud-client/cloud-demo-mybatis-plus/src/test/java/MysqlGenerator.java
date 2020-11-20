@@ -41,9 +41,12 @@ public class MysqlGenerator {
     //显示声明templatePath用于自定义mapper.xml的输出目录设置
     private static final String MAPPER_XML_TEMPLATE_PATH = "/generator/template/mapper.xml.ftl";
 
-    private static final String PROJECT_PATH = "E:\\gitHub\\spring-family\\";
+
+    private static final String PROJECT_PATH = System.getProperty("user.dir");//"E:\\gitHub\\spring-family\\";
     //项目名
-    private static final String PROJECT_PACKAGE = "spring-cloud-client";
+    private static final String PROJECT_PACKAGE = "";
+//    private static final String PROJECT_PATH = "E:\\gitHub\\spring-family\\";
+//    private static final String PROJECT_PACKAGE = "spring-cloud-client";
     //模块名
     private static final String MODULE_PACKAGE = "cloud-demo-mybatis-plus";
     //指定包名
@@ -115,8 +118,6 @@ public class MysqlGenerator {
      */
     private static GlobalConfig getGlobalConfig(boolean serviceNameStartWithI) {
 
-        String projectPath = System.getProperty("user.dir");
-
         GlobalConfig globalConfig = new GlobalConfig()
                 // 是否覆盖同名文件，默认是false
                 .setFileOverride(true)
@@ -138,7 +139,7 @@ public class MysqlGenerator {
                 .setOpen(false)
                 //设置输出路径
 //                .setOutputDir(projectPath + "/src/main/java")
-                .setOutputDir(getOutputDir(PROJECT_PACKAGE,MODULE_PACKAGE))
+                .setOutputDir(getOutputDir())
                 .setFileOverride(true);
         if (!serviceNameStartWithI) {
             // 自定义文件命名，注意 %s 会自动填充表实体属性！
@@ -154,13 +155,11 @@ public class MysqlGenerator {
 
     /**
      * 返回项目路径
-     * @param projectName 项目名
-     * @param moduleName 模块名称
      * @return 项目路径
      * @author huazai
      */
-    private static String getOutputDir(String projectName,String moduleName) {
-        return PROJECT_PATH + projectName + "\\" + moduleName + "\\src\\main\\java";
+    private static String getOutputDir() {
+        return PROJECT_PATH + PROJECT_PACKAGE + "\\" + MODULE_PACKAGE + "\\src\\main\\java";
     }
 
 
@@ -281,8 +280,7 @@ public class MysqlGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return getCustomOutputDir(PROJECT_PACKAGE,MODULE_PACKAGE) + "/src/main/resources/mapper/"
-                       + IS_XML_GENERATOR + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                return getCustomOutputDir() + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
         /*
@@ -302,13 +300,12 @@ public class MysqlGenerator {
 
     /**
      * 返回xml存储目录
-     * @param projectName 项目名
-     * @param moduleName 模块名称
      * @return 项目路径
      * @author huazai
      */
-    private static String getCustomOutputDir(String projectName,String moduleName) {
-        return PROJECT_PATH + projectName + "\\" + moduleName;
+    private static String getCustomOutputDir() {
+        return PROJECT_PATH + PROJECT_PACKAGE + "\\" + MODULE_PACKAGE  + "\\src\\main\\resources\\mapper\\"
+                + IS_XML_GENERATOR;
     }
 
     /**
