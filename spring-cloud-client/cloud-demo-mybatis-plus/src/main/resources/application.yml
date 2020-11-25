@@ -11,7 +11,7 @@ spring:
     username: root
     password: root
 
-#mybatis-plus:
+mybatis-plus:
 #  mapper-locations: classpath:mappers/*.xml
 #  #实体扫描，多个package用逗号或者分号分隔
 #  typeAliasesPackage: com.xkcoding.orm.mybatis.plus.entity
@@ -33,6 +33,8 @@ spring:
 #    #刷新mapper 调试神器
 #    refresh: true
 #  # 原生配置
-#  configuration:
+  configuration:
+    #mybatis-plus配置控制台打印完整带参数SQL语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #    map-underscore-to-camel-case: true
 #    cache-enabled: true
