@@ -1,0 +1,22 @@
+server:
+  port: 10001 #服务端口号
+spring:
+  application:
+    name: client-consume #应用名称
+eureka:
+  instance:
+      prefer-ip-address: true #注册服务时是否使用IP注册
+      instance-id: consume-server #注册到server的实例
+#      instance-id: ${spring.cloud.client.ip-address}:${server.port} #注册到server的实例
+      #续约更新时间间隔（默认30秒，eureka client发送心跳给server端的频率。如果在设定时间后，server端没有收到client的心跳，则将摘除该instance）
+      lease-renewal-interval-in-seconds: 3
+      #续约到期时间（默认为90秒，表示eureka server至上一次收到client的心跳之后，等待下一次心跳的超时时间，在这个时间内若没收到下一次心跳，则将移除该instance）
+      lease-expiration-duration-in-seconds: 9
+  client:
+    serviceUrl:
+      # 用于单机
+      defaultZone: http://local-server-1:8001/eureka/
+      #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址（集群）。
+#      defaultZone: http://local-server-1:8001/eureka/,http://local-server-2:8002/eureka/
+
+

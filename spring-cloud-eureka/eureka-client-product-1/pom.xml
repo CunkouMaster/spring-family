@@ -8,14 +8,23 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>eureka-master</artifactId>
-	<name>eureka-server-8001</name>
-	<description>eureka-server-8001</description>
+	<artifactId>client-product-master</artifactId>
+	<name>client-product-9001</name>
+	<description>eureka-client-product</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 	</dependencies>
 

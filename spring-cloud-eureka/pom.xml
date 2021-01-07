@@ -4,12 +4,63 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.12.RELEASE</version>
+        <relativePath/>
+    </parent>
     <groupId>spring.test</groupId>
     <artifactId>eureka-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
+    <name>eureka-parent</name>
+    <description>EUREKA注册中心</description>
 
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>eureka-server-1</module>
+        <module>eureka-server-2</module>
+        <module>eureka-client-consume</module>
+    </modules>
+
+    <!-- 全局属性配置 -->
     <properties>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <!-- 编译设置-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding><!--用来定义资源文件的编码格式-->
+        <!--<project.build.name>tools</project.build.name>--><!-- 用来定义包名称-->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- spring cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- spring boot test -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
 </project>
