@@ -1,0 +1,7 @@
+server:
+  port: 9010 #服务端口号
+spring:
+  application:
+    name: cloud-demo-security
+    #数据库配置
+
