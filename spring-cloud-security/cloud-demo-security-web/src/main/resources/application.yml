@@ -3,5 +3,14 @@ server:
 spring:
   application:
     name: cloud-demo-security-web
-    #数据库配置
+#  mvc:
+#    servlet:
+#      path: /security-web
+  #  数据库
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    # type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/spring_demo?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: root
 
