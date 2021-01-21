@@ -67,12 +67,13 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
         //表单登录
         http.formLogin()
                 //自定义登录页面
-                .loginPage("/login.html")
+//                .loginPage("/login.html")
+                .loginPage("/csrfLogin")
                 //自定义登录逻辑【不是controller中的login，是UserDetailsService中的loadUserByUsername方法】
                 .loginProcessingUrl("/login")
                 //登陆请求参数自定义
-                .usernameParameter("self_username")
-                .passwordParameter("self_password")
+//                .usernameParameter("self_username")
+//                .passwordParameter("self_password")
                 //认证成功/失败 跳转URL路径 【必须POST请求】
                 .successForwardUrl("/successPage")
                 .failureForwardUrl("/errorPage")
@@ -83,7 +84,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 //放行 登录页、error页面、退出成功页面
-                .antMatchers("/login.html","/error.html").permitAll()
+                .antMatchers("/login.html","/error.html","/csrfLogin").permitAll()
                 .antMatchers("/logoutSuccess.html").permitAll()
                 /*
                     antMatchers -- ant表达式，有http请求方式参数
@@ -125,9 +126,9 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
                 //指定存储位置
                 .tokenRepository(persistentTokenRepository)
                 //失效时间，默认2周
-                .tokenValiditySeconds(60*60)
+//                .tokenValiditySeconds(60*60)
                 //自定义参数
-                .rememberMeParameter("self_remember-me")
+//                .rememberMeParameter("self_remember-me")
                 //自定义记住逻辑
 //                .rememberMeServices()
         ;
@@ -139,6 +140,6 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
 
         // CSRF攻击拦截关闭
-        http.csrf().disable();
+//        http.csrf().disable();
     }
 }

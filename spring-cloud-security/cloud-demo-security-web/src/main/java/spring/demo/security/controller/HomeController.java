@@ -32,4 +32,9 @@ public class HomeController {
         return "main";
     }
 
+    @RequestMapping("/csrfLogin")
+    public String csrfLogin(){
+        return "login";
+    }
+
 }
