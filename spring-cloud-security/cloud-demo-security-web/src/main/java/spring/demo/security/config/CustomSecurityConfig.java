@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import spring.demo.security.config.handler.CustomAccessDeniedHandler;
 import spring.demo.security.config.handler.CustomAuthenticationFailureHandler;
 import spring.demo.security.config.handler.CustomAuthenticationSuccessHandler;
@@ -137,6 +138,8 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/logoutSuccess.html")
+                //添加 /logout 能够以 GET 请求的配置
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout","GET"))
         ;
 
         // CSRF攻击拦截关闭

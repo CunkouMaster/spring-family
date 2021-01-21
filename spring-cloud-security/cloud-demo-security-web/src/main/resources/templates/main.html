@@ -31,5 +31,12 @@
 <p> <button sec:authorize="hasAuthority('/update')" >更新权限</button> </p>
 <p> <button sec:authorize="hasAuthority('/delete')" >删除权限</button> </p>
 <p> <button sec:authorize="hasAuthority('/select')" >查询权限</button> </p>
+
+
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+    <p><input type="submit" value="退出登录"></p>
+</form>
+
 </body>
 </html>
