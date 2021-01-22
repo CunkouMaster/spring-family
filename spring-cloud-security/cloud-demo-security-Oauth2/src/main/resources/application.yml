@@ -1,0 +1,14 @@
+server:
+  port: 9012 #服务端口号
+spring:
+  application:
+    name: cloud-demo-security-Oauht2
+    #数据库配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    # type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/spring_demo?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+
