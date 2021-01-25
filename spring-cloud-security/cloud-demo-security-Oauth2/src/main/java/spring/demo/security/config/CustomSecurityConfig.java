@@ -1,24 +1,19 @@
 package spring.demo.security.config;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.web.accept.ContentNegotiationStrategy;
 import spring.demo.security.config.handler.CustomAccessDeniedHandler;
+import spring.demo.security.config.handler.CustomAuthenticationFailureHandler;
+import spring.demo.security.config.handler.CustomAuthenticationSuccessHandler;
 import spring.demo.security.config.service.CustomUserDetailsService;
 
 import javax.annotation.Resource;
@@ -96,8 +91,16 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        /*
+            默认它提供了三种登录方式：
+            formLogin() 普通表单登录
+            oauth2Login() 基于 OAuth2.0 认证/授权协议
+            openidLogin() 基于 OpenID 身份认证规范
+            以上三种方式统统是 AbstractAuthenticationFilterConfigurer 实现的
+         */
+
         //表单登录
-        http.formLogin()
+        http.oauth2Login()
                 //自定义登录页面
 //                .loginPage("/login.html")
                 .loginPage("/csrfLogin")
@@ -107,135 +110,24 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .usernameParameter("self_username")
 //                .passwordParameter("self_password")
                 //认证成功/失败 跳转URL路径 【必须POST请求】
-                .successForwardUrl("/successPage")
-                .failureForwardUrl("/errorPage")
+//                .successForwardUrl("/successPage")
+//                .failureForwardUrl("/errorPage")
                 //自定义 登录成功/失败 逻辑
-//                .successHandler(new CustomAuthenticationSuccessHandler("https://www.baidu.com/"))
-//                .failureHandler(new CustomAuthenticationFailureHandler("https://cn.bing.com/"))
+                .successHandler(new CustomAuthenticationSuccessHandler("https://www.baidu.com/"))
+                .failureHandler(new CustomAuthenticationFailureHandler("https://cn.bing.com/"))
         ;
 
         http.authorizeRequests()
                 //放行 登录页、error页面、退出成功页面
                 .antMatchers("/login.html","/error.html","/csrfLogin").permitAll()
                 .antMatchers("/logoutSuccess.html").permitAll()
-                /*
-                    antMatchers -- ant表达式，有http请求方式参数
-                    regexMatchers -- 正则表达式，有http请求方式参数
-
-                    url 匹配规则
-                    ?  : 匹配一个字符
-                    *  : 匹配0或多个字符
-                    ** : 匹配0或多个目录
-                 */
-                //访问路径控制
-//                .mvcMatchers("/images/**").servletPath("/security-web").permitAll()
-//                .regexMatchers(HttpMethod.GET,"").permitAll()
-//                .antMatchers("/images/**").permitAll()
-//                .antMatchers("/**/*.png").permitAll()
-                //根据权限匹配【严格区分大小写】
-//                .antMatchers("/index.html").hasAuthority("admin")
-//                .antMatchers("/index.html").hasAnyAuthority("admin","ROLE_A")
-                //根据角色匹配【不能以ROLE_开头，严格区分大小写】
-//                .antMatchers("/index.html").hasRole("B")
-//                .antMatchers("/index.html").hasAnyRole("A","B")
-                //根据IP匹配
-//                .antMatchers("/index.html").hasIpAddress("127.0.0.1")
-                //自定义权限逻辑
-//                .anyRequest().access("@customPermissionService.hasPermission(request,authentication)")
 
                 //所有请求都必须认证（登录）
                 .anyRequest().authenticated()
-        ;
-
-        //异常处理
-        http.exceptionHandling()
-                .accessDeniedHandler(customAccessDeniedHandler);
-
-        //登录记住
-        http.rememberMe()
-                //自定义登录逻辑
-                .userDetailsService(customUserDetailsService)
-                //指定存储位置
-                .tokenRepository(persistentTokenRepository)
-                //失效时间，默认2周
-//                .tokenValiditySeconds(60*60)
-                //自定义参数
-//                .rememberMeParameter("self_remember-me")
-                //自定义记住逻辑
-//                .rememberMeServices()
-        ;
-
-        //退出登录
-        http.logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/logoutSuccess.html")
-                //添加 /logout 能够以 GET 请求的配置
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout","GET"))
         ;
 
         // CSRF攻击拦截关闭
 //        http.csrf().disable();
     }
 
-    protected CustomSecurityConfig() {
-        super();
-    }
-
-    protected CustomSecurityConfig(boolean disableDefaults) {
-        super(disableDefaults);
-    }
-
-
-
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
-
-    @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return super.userDetailsServiceBean();
-    }
-
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return super.userDetailsService();
-    }
-
-    @Override
-    public void init(WebSecurity web) throws Exception {
-        super.init(web);
-    }
-
-
-
-    @Override
-    public void setApplicationContext(ApplicationContext context) {
-        super.setApplicationContext(context);
-    }
-
-    @Override
-    public void setTrustResolver(AuthenticationTrustResolver trustResolver) {
-        super.setTrustResolver(trustResolver);
-    }
-
-    @Override
-    public void setContentNegotationStrategy(ContentNegotiationStrategy contentNegotiationStrategy) {
-        super.setContentNegotationStrategy(contentNegotiationStrategy);
-    }
-
-    @Override
-    public void setObjectPostProcessor(ObjectPostProcessor<Object> objectPostProcessor) {
-        super.setObjectPostProcessor(objectPostProcessor);
-    }
-
-    @Override
-    public void setAuthenticationConfiguration(AuthenticationConfiguration authenticationConfiguration) {
-        super.setAuthenticationConfiguration(authenticationConfiguration);
-    }
 }
