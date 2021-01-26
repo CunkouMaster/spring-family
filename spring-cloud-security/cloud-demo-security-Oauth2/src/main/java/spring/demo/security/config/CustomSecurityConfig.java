@@ -2,18 +2,13 @@ package spring.demo.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import spring.demo.security.config.handler.CustomAccessDeniedHandler;
-import spring.demo.security.config.handler.CustomAuthenticationFailureHandler;
-import spring.demo.security.config.handler.CustomAuthenticationSuccessHandler;
 import spring.demo.security.config.service.CustomUserDetailsService;
 
 import javax.annotation.Resource;
@@ -31,11 +26,9 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private CustomUserDetailsService customUserDetailsService;
     @Resource
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-    @Resource
     private DataSource dataSource;
-    @Resource
-    private PersistentTokenRepository persistentTokenRepository;
+//    @Resource
+//    private PersistentTokenRepository persistentTokenRepository;
 
     @Bean("passwordEncoder")
     public PasswordEncoder getPasswordEncoderInstance() {
@@ -67,10 +60,10 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param webSecurity
      * @throws Exception
      */
-    @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
-        super.configure(webSecurity);
-    }
+//    @Override
+//    public void configure(WebSecurity webSecurity) throws Exception {
+//        super.configure(webSecurity);
+//    }
 
     /**
      * 用来配置认证管理器AuthenticationManager。
@@ -78,10 +71,10 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth
      * @throws Exception
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        super.configure(auth);
+//    }
 
     /**
      *  URL权限控制
@@ -100,21 +93,18 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
          */
 
         //表单登录
-        http.oauth2Login()
+        http.formLogin()
                 //自定义登录页面
 //                .loginPage("/login.html")
                 .loginPage("/csrfLogin")
                 //自定义登录逻辑【不是controller中的login，是UserDetailsService中的loadUserByUsername方法】
                 .loginProcessingUrl("/login")
-                //登陆请求参数自定义
-//                .usernameParameter("self_username")
-//                .passwordParameter("self_password")
-                //认证成功/失败 跳转URL路径 【必须POST请求】
-//                .successForwardUrl("/successPage")
-//                .failureForwardUrl("/errorPage")
                 //自定义 登录成功/失败 逻辑
-                .successHandler(new CustomAuthenticationSuccessHandler("https://www.baidu.com/"))
-                .failureHandler(new CustomAuthenticationFailureHandler("https://cn.bing.com/"))
+                //认证成功/失败 跳转URL路径 【必须POST请求】
+                .successForwardUrl("/successPage")
+                .failureForwardUrl("/errorPage")
+//                .successHandler(new CustomAuthenticationSuccessHandler("https://www.baidu.com/"))
+//                .failureHandler(new CustomAuthenticationFailureHandler("https://cn.bing.com/"))
         ;
 
         http.authorizeRequests()
@@ -124,6 +114,14 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //所有请求都必须认证（登录）
                 .anyRequest().authenticated()
+        ;
+
+        //退出登录
+        http.logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/logoutSuccess.html")
+        //添加 /logout 能够以 GET 请求的配置
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout","GET"))
         ;
 
         // CSRF攻击拦截关闭
