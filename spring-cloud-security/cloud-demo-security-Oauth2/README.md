@@ -3,6 +3,8 @@
 第三方应用授权登录：在APP或者网页接入一些第三方应用时，时长会需要用户登录另一个合作平台，比如QQ，微博，微信的授权登录。
 
 ![图片](../cloud-demo-security-Oauth2/src/main/resources/static/应用场景.png)
+<br/>
+
 **名词说明：**
 <br/>（1）Third-party application：第三方应用程序，本文中又称"客户端"（client），比如打开知乎，使用第三方登录，选择qq登录，这时候知乎就是客户端。
 <br/>（2）HTTP service：HTTP服务提供商，本文中简称"服务提供商"，即上例的qq。
