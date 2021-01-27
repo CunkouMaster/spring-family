@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -20,41 +21,23 @@ public class UserEntity implements UserDetails {
     /**
      * 用户名
      */
-    private String username;
+    private final String username;
 
     /**
      * 密码
      */
-    private String password;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
 
-    /**
-     * 邮箱
-     */
-    private String email;
-
-    /**
-     * 手机
-     */
-    private String phone;
-
-    /**
-     * 是否是管理员 0：不是，1：是
-     */
-    private Integer adminFlag;
-
-    /**
-     * 状态 0：正常，1：冻结
-     */
-    private Integer state;
-
-    /**
-     * 删除标志0：未删除，1：已删除
-     */
-    private Integer deleteFlag;
+    public UserEntity(String username, String password, List<GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
@@ -87,59 +70,4 @@ public class UserEntity implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Integer getAdminFlag() {
-        return adminFlag;
-    }
-    public void setAdminFlag(Integer adminFlag) {
-        this.adminFlag = adminFlag;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-            ", userName=" + username +
-            ", password=" + password +
-            ", email=" + email +
-            ", phone=" + phone +
-            ", adminFlag=" + adminFlag +
-            ", state=" + state +
-            ", deleteFlag=" + deleteFlag +
-        "}";
-    }
 }

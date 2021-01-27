@@ -1,12 +1,12 @@
-package spring.demo.security.config.service;
+package spring.demo.security.service;
 
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import spring.demo.security.entity.UserEntity;
 
 import javax.annotation.Resource;
 
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Resource
+    @Resource(name = "CustomBCryptPasswordEncoder")
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         //用户名 -- 加密密码 -- 用户权限
-        return new User(
+        return new UserEntity(
                 "admin",
                 passwordEncoder.encode("123456"),
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin,normal,ROLE_A"));

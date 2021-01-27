@@ -1,18 +1,14 @@
 package spring.demo.security.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import spring.demo.security.config.service.CustomUserDetailsService;
+import spring.demo.security.service.CustomUserDetailsService;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 
 /**
  * @author huazai
@@ -25,31 +21,13 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private CustomUserDetailsService customUserDetailsService;
-    @Resource
-    private DataSource dataSource;
+
 //    @Resource
 //    private PersistentTokenRepository persistentTokenRepository;
 
-    @Bean("passwordEncoder")
-    public PasswordEncoder getPasswordEncoderInstance() {
-        return new BCryptPasswordEncoder();
-    }
 
-    /**
-     * 持久化token
-     *
-     * Security中，默认是使用PersistentTokenRepository的子类InMemoryTokenRepositoryImpl，将token放在内存中
-     * 如果使用JdbcTokenRepositoryImpl，会创建表persistent_logins，将token持久化到数据库
-     */
-    @Bean("persistentTokenRepository")
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        // 设置数据源
-        tokenRepository.setDataSource(dataSource);
-        // 启动创建表，创建成功后注释掉
-//        tokenRepository.setCreateTableOnStartup(true);
-        return tokenRepository;
-    }
+
+
 
     /**
      *  用来配置 WebSecurity 。
@@ -60,10 +38,10 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param webSecurity
      * @throws Exception
      */
-//    @Override
-//    public void configure(WebSecurity webSecurity) throws Exception {
-//        super.configure(webSecurity);
-//    }
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        super.configure(webSecurity);
+    }
 
     /**
      * 用来配置认证管理器AuthenticationManager。
@@ -71,10 +49,10 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth
      * @throws Exception
      */
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        super.configure(auth);
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        super.configure(auth);
+    }
 
     /**
      *  URL权限控制
