@@ -25,26 +25,26 @@
 <br/>（3）认证服务器核对了授权码和重定向URI，确认无误后，向客户端发送访问令牌（access token）和更新令牌（refresh token）。POST /oauth/token?response_type=authorization_code&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=重定向页面链接。
 
 
-    +--------+								  +-------------+
-    |		 |--(A)- Authorization Request -> |		        |
-    |		 |								  |	  Resource  |
-    |		 |<-(B)- Authorization Grant   -- |    Owner    |
-    |		 |								  |   		    |
-    |		 |								  +-------------+
-    |		 |								  
-    |		 |								  +-------------+
-    |		 |--(C)- Authorization Grant   -> |				|
-    | Client |								  |Authorization|
-    |		 |<-(D)-   Access Token		  --  |   Server  	|
-    |		 |								  |				|
-    |		 |								  +-------------+
-    |		 |
-    |		 |								  +-------------+
-    |		 |--(E)-   Access Token        -- |				|
-    |		 |								  |	  Resource  |
-    |		 |<-(F)-  Protected Resource   -- |	   Server  	|
-    |		 |								  |   			|
-    +--------+							      +-------------+
+    +--------+                                +-------------+
+    |        |--(A)- Authorization Request -> |             |
+    |        |                                |   Resource  |
+    |        |<-(B)- Authorization Grant   -- |    Owner    |
+    |        |                                |             |
+    |        |                                +-------------+
+    |        |								  
+    |        |                                +-------------+
+    |        |--(C)- Authorization Grant   -> |             |
+    | Client |                                |Authorization|
+    |        |<-(D)-     Access Token      -- |   Server  	|
+    |        |                                |             |
+    |        |                                +-------------+
+    |        |
+    |        |                                +-------------+
+    |        |--(E)-    Access Token       -- |             |
+    |        |                                |   Resource  |
+    |        |<-(F)-  Protected Resource   -- |   Server  	|
+    |        |                                |             |
+    +--------+                                +-------------+
 
 步骤说明：
 <br/>（A）用户打开客户端以后，客户端要求用户给予授权。
@@ -58,22 +58,22 @@
 <br/>用户向客户端提供自己的用户名和密码，一般不支持refresh token。
 
     +--------+							
-    |		 |
+    |        |
     |Resource|
     | Owner	 |
-    |		 |	
+    |        |	
  	+--------+
 	    ∨
-		|		Resource Owner
+	    |  	  Resource Owner
 	   (A)
-		|  	(password credentials)
-		∨							  
-    +--------+		(password credentials)	  +-------------+
-    |		 |--(B)- 	Resource Owner     -> |				|
-    | Client |							  	  |Authorization|
-    |		 |<-(C)-   	Access Token      --  |   Server  	|
-    |		 |		(Option Refresh Token)	  |				|
-    +--------+								  +-------------+
+	    |  	(password credentials)
+	    ∨							  
+    +--------+     (password credentials)     +-------------+
+    |        |--(B)-   Resource Owner      -> |             |
+    | Client |                                |Authorization|
+    |        |<-(C)-    Access Token       -- |   Server  	|
+    |        |     (Option Refresh Token)     |             |
+    +--------+                                +-------------+
 
 步骤说明：
 <br/>（A）用户向客户端提供用户名和密码。
@@ -96,12 +96,12 @@
 ## 客户端模式（client credentials） ##
 用户直接向客户端注册，客户端以自己的名义要求"服务提供商"提供服务，其实不存在授权问题
 
-    +--------+								  +-------------+
-    |		 |--(A)- Client Authorizatio   -> |				|
-    | Client |							  	  |Authorization|
-    |		 |<-(B)-   	Access Token      --  |   Server  	|
-    |		 |								  |				|
-    +--------+								  +-------------+
+    +--------+                                +-------------+
+    |        |--(A)- Client Authorizatio   -> |             |
+    | Client |                                |Authorization|
+    |        |<-(B)-  Access Token        --  |   Server  	|
+    |        |                                |             |
+    +--------+                                +-------------+
 
 步骤说明：
 <br/>（A）客户端向认证服务器进行身份认证，并要求一个访问令牌。
