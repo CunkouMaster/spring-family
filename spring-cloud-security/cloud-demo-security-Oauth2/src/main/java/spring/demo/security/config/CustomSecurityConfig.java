@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import spring.demo.security.service.CustomUserDetailsService;
 
@@ -15,6 +16,8 @@ import javax.annotation.Resource;
  * @date 2021/1/19 13:47
  */
 @Configuration
+//启用Web安全
+@EnableWebSecurity
 //开启Security注解
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -70,6 +73,18 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
             以上三种方式统统是 AbstractAuthenticationFilterConfigurer 实现的
          */
 
+        //授权
+        http.authorizeRequests()
+                //放行 登录页、error页面、退出成功页面
+                .antMatchers("/login.html","/error.html","/csrfLogin").permitAll()
+                .antMatchers("/logoutSuccess.html").permitAll()
+                //放行授权相关
+                .antMatchers("/oauth/**").permitAll()
+
+                //所有请求都必须认证（登录）
+                .anyRequest().authenticated()
+        ;
+
         //表单登录
         http.formLogin()
                 //自定义登录页面
@@ -83,15 +98,6 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureForwardUrl("/errorPage")
 //                .successHandler(new CustomAuthenticationSuccessHandler("https://www.baidu.com/"))
 //                .failureHandler(new CustomAuthenticationFailureHandler("https://cn.bing.com/"))
-        ;
-
-        http.authorizeRequests()
-                //放行 登录页、error页面、退出成功页面
-                .antMatchers("/login.html","/error.html","/csrfLogin").permitAll()
-                .antMatchers("/logoutSuccess.html").permitAll()
-
-                //所有请求都必须认证（登录）
-                .anyRequest().authenticated()
         ;
 
         //退出登录

@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -39,6 +41,11 @@ public class Beans {
         // 启动创建表，创建成功后注释掉
 //        tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
+    }
+
+    @Bean(name = "CustomClientDetailsService")
+    public ClientDetailsService JdbcClientDetailsService(){
+        return new JdbcClientDetailsService(dataSource);
     }
 
 
