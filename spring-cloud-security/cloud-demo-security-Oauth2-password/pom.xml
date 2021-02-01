@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>demo-security-Oauht2</artifactId>
-    <name>security-Oauth2</name>
-    <description>spring security Oauht2【authorization_code】</description>
+    <artifactId>demo-security-Oauht2-password</artifactId>
+    <name>security-Oauth2-password</name>
+    <description>spring security Oauht2【password】</description>
 
     <dependencies>
         <!--web组件-->
@@ -28,6 +28,24 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <!-- 排除redis默认客户端lettuce -->
+            <exclusions>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 使用jedis作为redis的客户端 -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
         </dependency>
 
         <!-- jdbc-->

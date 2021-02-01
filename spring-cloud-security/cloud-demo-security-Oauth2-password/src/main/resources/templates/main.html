@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Main-Page</title>
+    <style type="text/css">
+        h3, p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h3>thymeleaf main page</h3>
+
+<p>登录账号 <span sec:authentication="name"></span></p>
+<p>登录账号 <span sec:authentication="principal.username"></span></p>
+<p>凭证 <span sec:authentication="credentials"></span></p>
+<p>权限角色集合 <span sec:authentication="authorities"></span></p>
+<p>IP地址 <span sec:authentication="details.remoteAddress"></span></p>
+<p>会话ID <span sec:authentication="details.sessionId"></span></p>
+
+<h3>权限控制展示</h3>
+<p> <button sec:authorize="hasRole('A')" >角色A</button> </p>
+<p> <button sec:authorize="hasRole('B')" >角色B</button> </p>
+<p> <button sec:authorize="hasRole('C')" >角色C</button> </p>
+<p> <button sec:authorize="hasRole('D')" >角色D</button> </p>
+
+<p> <button sec:authorize="hasAuthority('/create')" >创建权限</button> </p>
+<p> <button sec:authorize="hasAuthority('/update')" >更新权限</button> </p>
+<p> <button sec:authorize="hasAuthority('/delete')" >删除权限</button> </p>
+<p> <button sec:authorize="hasAuthority('/select')" >查询权限</button> </p>
+
+
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+    <p><input type="submit" value="退出登录"></p>
+</form>
+
+</body>
+</html>

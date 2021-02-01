@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>demo-security-Oauht2</artifactId>
-    <name>security-Oauth2</name>
-    <description>spring security Oauht2【authorization_code】</description>
+    <artifactId>demo-security-jwt</artifactId>
+    <name>security-jwt</name>
+    <description>spring security Oauht2【JWT】</description>
 
     <dependencies>
         <!--web组件-->
