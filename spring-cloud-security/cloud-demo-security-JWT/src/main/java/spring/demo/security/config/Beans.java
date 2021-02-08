@@ -6,6 +6,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -33,7 +37,7 @@ public class Beans {
      * Security中，默认是使用PersistentTokenRepository的子类InMemoryTokenRepositoryImpl，将token放在内存中
      * 如果使用JdbcTokenRepositoryImpl，会创建表persistent_logins，将token持久化到数据库
      */
-    @Bean(name = "CustomPersistentTokenRepository")
+    @Bean(name = "customPersistentTokenRepository")
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         // 设置数据源
@@ -43,10 +47,32 @@ public class Beans {
         return tokenRepository;
     }
 
-    @Bean(name = "CustomClientDetailsService")
+    @Bean(name = "customClientDetailsService")
     public ClientDetailsService JdbcClientDetailsService(){
         return new JdbcClientDetailsService(dataSource);
     }
 
+    /**
+     * jwt token 转换成 oauth2 token
+     * @param customJwtAccessTokenConverter
+     * @return
+     */
+    @Bean(name = "customJwtTokenStore")
+    public TokenStore getTokenStore(JwtAccessTokenConverter customJwtAccessTokenConverter) {
+        return new JwtTokenStore(customJwtAccessTokenConverter);
+    }
+
+    @Bean(name = "customJwtAccessTokenConverter")
+    public JwtAccessTokenConverter getJwtAccessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        //jwt秘钥
+        jwtAccessTokenConverter.setSigningKey("xxx");
+        return jwtAccessTokenConverter;
+    }
+
+    @Bean(name = "customTokenEnhancer")
+    public TokenEnhancer getJwtTokenEnhancer() {
+        return new CustomJwtTokenEnhancer();
+    }
 
 }
