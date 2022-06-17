@@ -36,7 +36,7 @@
     <mybatisplus-generator.version>3.3.2</mybatisplus-generator.version>
 
     <commons-lang3.version>3.9</commons-lang3.version>
-    <fastjson.version>1.2.75</fastjson.version>
+    <fastjson.version>1.2.83</fastjson.version>
     <!-- 编译设置-->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding><!--用来定义资源文件的编码格式-->
     <!--<project.build.name>tools</project.build.name>--><!-- 用来定义包名称-->
